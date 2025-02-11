@@ -4,7 +4,7 @@ from src.analyzer.local_document_analyzer import LocalDocumentAnalyzer
 
 
 def test_analyze_document_with_incompatible_extension():
-    local_document_analyzer = LocalDocumentAnalyzer(["tag_test"])
+    local_document_analyzer = LocalDocumentAnalyzer(["tag_test"], True)
     file_path = Path("tests/ressources/data.zip")
 
     assert (
@@ -16,7 +16,7 @@ def test_analyze_document_with_incompatible_extension():
 
 
 def test_analyze_document_with_compatible_extension():
-    local_document_analyzer = LocalDocumentAnalyzer(["tag_test"])
+    local_document_analyzer = LocalDocumentAnalyzer(["tag_test"], True)
     file_path = Path("tests/ressources/data.txt")
 
     assert (

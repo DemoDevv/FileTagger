@@ -8,7 +8,11 @@ import pypdf
 
 
 class DocumentAnalyzer:
-    def __init__(self, tags_list: List[str]):
+    def __init__(
+        self,
+        tags_list: List[str],
+        logging_level: bool = True,
+    ):
         """
         Initialise l'analyseur avec une liste de tags
         """
@@ -22,11 +26,11 @@ class DocumentAnalyzer:
             ".txt",
         }
 
-        # Configuration du logging
-        logging.basicConfig(
-            level=logging.INFO,
-            format="%(asctime)s - %(levelname)s - %(message)s",
-        )
+        if logging_level:
+            logging.basicConfig(
+                level=logging.INFO,
+                format="%(asctime)s - %(levelname)s - %(message)s",
+            )
 
     def analyze_document(self, file_path: Path) -> Optional[dict]:
         """
