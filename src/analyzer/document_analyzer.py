@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import List, Set, Union
+from typing import List, Optional, Set
 
 import docx
 import pandas as pd
@@ -28,7 +28,7 @@ class DocumentAnalyzer:
             format="%(asctime)s - %(levelname)s - %(message)s",
         )
 
-    def analyze_document(self, file_path: Path) -> Union[dict, None]:
+    def analyze_document(self, file_path: Path) -> Optional[dict]:
         """
         Analyse un document et retourne les tags trouvés
         """
@@ -38,6 +38,10 @@ class DocumentAnalyzer:
                 return None
 
             text_content = self._extract_text(file_path, extension)
+
+            if text_content is None:
+                return None
+
             found_tags = self._find_tags(text_content)
 
             if found_tags:
@@ -50,7 +54,7 @@ class DocumentAnalyzer:
         except Exception as e:
             logging.error(f"Erreur lors de l'analyse de {file_path}: {str(e)}")
 
-    def _extract_text(self, file_path: Path, extension: str) -> str:
+    def _extract_text(self, file_path: Path, extension: str) -> Optional[str]:
         """
         Extrait le texte d'un document selon son type
         """
@@ -78,9 +82,7 @@ class DocumentAnalyzer:
 
         except Exception as e:
             logging.error(f"Erreur d'extraction pour {file_path}: {str(e)}")
-            return ""
-
-        return ""
+            return None
 
     def _find_tags(self, text: str) -> Set[str]:
         """
