@@ -1,0 +1,5 @@
+pypdf
+pandas
+pytest
+openpyxl
+python-docx
