@@ -30,7 +30,9 @@
 #     # Affichage des mots triés par fréquence
 #     for mot, freq in mots_avec_frequences:
 #         print(f"{mot}: {freq}")
+from src.analyzer.local_document_analyzer import LocalDocumentAnalyzer
 
 
 def main():
-    print("Hello world!")
+    local_file_analyzer = LocalDocumentAnalyzer(["python", "java", "c++"])
+    local_file_analyzer.process_directory("./ressources")
