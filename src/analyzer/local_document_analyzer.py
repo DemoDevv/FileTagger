@@ -10,7 +10,7 @@ from src.analyzer.document_analyzer import DocumentAnalyzer
 
 class LocalDocumentAnalyzer(DocumentAnalyzer):
     def __init__(self, tags_list: List[str], logging_level: bool):
-        super().__init__(tags_list)
+        super().__init__(tags_list, logging_level)
 
     def process_directory(
         self,
