@@ -4,7 +4,7 @@ from typing import List, Set, Union
 
 import docx
 import pandas as pd
-import PyPDF2
+import pypdf
 
 
 class DocumentAnalyzer:
@@ -57,7 +57,7 @@ class DocumentAnalyzer:
         try:
             if extension == ".pdf":
                 with open(file_path, "rb") as file:
-                    reader = PyPDF2.PdfReader(file)
+                    reader = pypdf.PdfReader(file)
                     return " ".join(
                         page.extract_text() for page in reader.pages
                     )
