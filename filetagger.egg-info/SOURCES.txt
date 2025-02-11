@@ -1,0 +1,11 @@
+README.md
+pyproject.toml
+src/__init__.py
+src/main.py
+src/analyzer/__init__.py
+src/analyzer/document_analyzer.py
+src/analyzer/local_document_analyzer.py
+src/filetagger.egg-info/PKG-INFO
+src/filetagger.egg-info/SOURCES.txt
+src/filetagger.egg-info/dependency_links.txt
+src/filetagger.egg-info/top_level.txt
