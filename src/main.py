@@ -34,5 +34,5 @@ from src.analyzer.local_document_analyzer import LocalDocumentAnalyzer
 
 
 def main():
-    local_file_analyzer = LocalDocumentAnalyzer(["python", "java", "c++"])
+    local_file_analyzer = LocalDocumentAnalyzer(["python", "data", "fusible"])
     local_file_analyzer.process_directory("./ressources")

@@ -1,6 +1,9 @@
 import logging
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 from typing import List, Union
+
+import pandas as pd
 
 from src.analyzer.document_analyzer import DocumentAnalyzer
 
@@ -28,3 +31,31 @@ class LocalDocumentAnalyzer(DocumentAnalyzer):
                 all_files.append(file_path)
 
         logging.info(f"Trouvé {len(all_files)} fichiers à analyser")
+
+        # Analyse les fichiers en parallèle
+        results = []
+        with ProcessPoolExecutor() as executor:
+            future_to_file = {
+                executor.submit(self.analyze_document, file_path): file_path
+                for file_path in all_files
+            }
+
+            for future in future_to_file:
+                file_path = future_to_file[future]
+
+                logging.info(f"Analyse de {file_path}")
+
+                result = future.result()
+                if result:
+                    results.append(result)
+
+        # Exporte les résultats
+        if results:
+            df = pd.DataFrame(results)
+            df.to_excel(output_file, index=False)
+            logging.info(f"Résultats exportés dans {output_file}")
+            logging.info(f"Trouvé {len(results)} fichiers contenant des tags")
+        else:
+            logging.warning("Aucun tag trouvé dans les documents")
+
+        return results
