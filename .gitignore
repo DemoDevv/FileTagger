@@ -4,3 +4,4 @@ ressources/*
 .DS_Store
 .python-version
 pyrightconfig.json
+.pytest_cache
