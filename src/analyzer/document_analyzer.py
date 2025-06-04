@@ -56,7 +56,7 @@ class DocumentAnalyzer:
                 return {
                     "file_name": file_path.name,
                     "file_path": str(file_path),
-                    "tags": ",".join(found_tags),
+                    "tags": ",".join(sorted(found_tags)),
                 }
 
         except Exception as e:
