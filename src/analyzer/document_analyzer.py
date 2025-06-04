@@ -46,13 +46,14 @@ class DocumentAnalyzer:
             if text_content is None:
                 return None
 
+            found_tags_title = self._find_tags(file_path.name)
             found_tags = self._find_tags(text_content)
 
             if found_tags:
                 return {
                     "file_name": file_path.name,
                     "file_path": str(file_path),
-                    "tags": list(found_tags),
+                    "tags": found_tags.update(found_tags_title),
                 }
 
         except Exception as e:
