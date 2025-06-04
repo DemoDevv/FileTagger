@@ -48,7 +48,7 @@ class DocumentAnalyzer:
             if text_content is None:
                 return None
 
-            found_tags_title = self._find_tags(file_path.name)
+            found_tags_title = self._find_tags(file_path.stem)
             found_tags = self._find_tags(text_content)
             found_tags.update(found_tags_title)
 
