@@ -25,3 +25,15 @@ def test_analyze_document_with_compatible_extension():
         )
         == ""
     )
+
+def test_analyze_document_title():
+    local_document_analyzer = LocalDocumentAnalyzer(["python"], True)
+    file_path = Path("tests/ressources/test_tag_python.txt")
+
+    tags = local_document_analyzer.analyze_document(
+        file_path
+    )
+
+    assert (
+        tags != None and tags["tags"] == "python"
+    )
