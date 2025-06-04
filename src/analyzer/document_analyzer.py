@@ -1,3 +1,4 @@
+from __future__ import print_function
 import logging
 from pathlib import Path
 from typing import List, Optional, Set
@@ -38,6 +39,7 @@ class DocumentAnalyzer:
         """
         try:
             extension = file_path.suffix.lower()
+
             if extension not in self.supported_extensions:
                 return None
 
@@ -48,12 +50,13 @@ class DocumentAnalyzer:
 
             found_tags_title = self._find_tags(file_path.name)
             found_tags = self._find_tags(text_content)
+            found_tags.update(found_tags_title)
 
-            if found_tags:
+            if found_tags_title or found_tags:
                 return {
                     "file_name": file_path.name,
                     "file_path": str(file_path),
-                    "tags": found_tags.update(found_tags_title),
+                    "tags": ",".join(found_tags),
                 }
 
         except Exception as e:
@@ -93,5 +96,4 @@ class DocumentAnalyzer:
         """
         Trouve les tags dans le texte
         """
-        words = set(text.lower().split())
-        return self.tags.intersection(words)
+        return set([tag for tag in self.tags if text.find(tag) != -1])
