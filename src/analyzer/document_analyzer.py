@@ -3,10 +3,14 @@ from pathlib import Path
 from typing import List, Optional, Set
 import logging
 
-import docx
-import pptx
-import pypdf
-import pandas as pd
+from analyzer.readers import (
+    doc_reader,
+    docx_reader,
+    pdf_reader,
+    pptx_reader,
+    txt_reader,
+    xlsx_reader,
+)
 
 
 class DocumentAnalyzer:
@@ -20,13 +24,13 @@ class DocumentAnalyzer:
         """
         self.tags = set(tag.lower() for tag in tags_list)
         self.supported_extensions = {
-            ".pdf",
-            ".doc",
-            ".docx",
-            ".xlsx",
-            ".xls",
-            ".txt",
-            ".pptx"
+            ".pdf": pdf_reader,
+            ".doc": doc_reader,
+            ".docx": docx_reader,
+            ".xlsx": xlsx_reader,
+            ".xls": xlsx_reader,
+            ".txt": txt_reader,
+            ".pptx": pptx_reader,
         }
 
         if logging_level:
@@ -69,41 +73,7 @@ class DocumentAnalyzer:
         Extrait le texte d'un document selon son type
         """
         try:
-            if extension == ".pdf":
-                with open(file_path, "rb") as file:
-                    reader = pypdf.PdfReader(file)
-                    return " ".join(
-                        page.extract_text() for page in reader.pages
-                    )
-
-            elif extension in [".docx", ".doc"]:
-                doc = docx.Document(file_path.__str__())
-                return " ".join(paragraph.text for paragraph in doc.paragraphs)
-
-            elif extension in [".xlsx", ".xls"]:
-                df = pd.read_excel(file_path)
-                return " ".join(df.astype(str).values.flatten())
-
-            elif extension == ".pptx":
-                prs = pptx.Presentation(file_path.__str__())
-
-                text_buffer = []
-
-                for slide in prs.slides:
-                    for shape in slide.shapes:
-                        if not shape.has_text_frame:
-                            continue
-                        for paragraph in shape.text_frame.paragraphs: # type: ignore
-                            for run in paragraph.runs:
-                                text_buffer.append(run.text)
-
-                return " ".join(text_buffer)
-
-            elif extension == ".txt":
-                with open(
-                    file_path, "r", encoding="utf-8", errors="ignore"
-                ) as file:
-                    return file.read()
+            return self.supported_extensions[extension](file_path)
 
         except Exception as e:
             logging.error(f"Erreur d'extraction pour {file_path}: {str(e)}")

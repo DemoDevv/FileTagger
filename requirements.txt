@@ -2,5 +2,6 @@ pypdf
 pandas
 pytest
 openpyxl
+xlrd
 python-docx
 python-pptx
