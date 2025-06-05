@@ -6,3 +6,4 @@ ressources/*
 .python-version
 pyrightconfig.json
 .pytest_cache
+.ruff_cache
