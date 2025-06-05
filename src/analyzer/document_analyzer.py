@@ -1,11 +1,12 @@
 from __future__ import print_function
-import logging
 from pathlib import Path
 from typing import List, Optional, Set
+import logging
 
 import docx
-import pandas as pd
+import pptx
 import pypdf
+import pandas as pd
 
 
 class DocumentAnalyzer:
@@ -25,6 +26,7 @@ class DocumentAnalyzer:
             ".xlsx",
             ".xls",
             ".txt",
+            ".pptx"
         }
 
         if logging_level:
@@ -81,6 +83,21 @@ class DocumentAnalyzer:
             elif extension in [".xlsx", ".xls"]:
                 df = pd.read_excel(file_path)
                 return " ".join(df.astype(str).values.flatten())
+
+            elif extension == ".pptx":
+                prs = pptx.Presentation(file_path.__str__())
+
+                text_buffer = []
+
+                for slide in prs.slides:
+                    for shape in slide.shapes:
+                        if not shape.has_text_frame:
+                            continue
+                        for paragraph in shape.text_frame.paragraphs: # type: ignore
+                            for run in paragraph.runs:
+                                text_buffer.append(run.text)
+
+                return " ".join(text_buffer)
 
             elif extension == ".txt":
                 with open(
