@@ -21,8 +21,6 @@ def parse_arguments():
         nargs="+",
         required=True,
     )
-    parser.add_argument(
-        "-v", "--verbose", help="Affiche les logs", action="store_true"
-    )
+    parser.add_argument("-v", "--verbose", help="Affiche les logs", action="store_true")
 
     return parser.parse_args()

@@ -3,7 +3,14 @@ from pathlib import Path
 from typing import List, Optional, Set
 import logging
 
-from analyzer.readers import doc_reader, docx_reader, pdf_reader, pptx_reader, txt_reader, xlsx_reader
+from analyzer.readers import (
+    doc_reader,
+    docx_reader,
+    pdf_reader,
+    pptx_reader,
+    txt_reader,
+    xlsx_reader,
+)
 
 
 class DocumentAnalyzer:
@@ -23,7 +30,7 @@ class DocumentAnalyzer:
             ".xlsx": xlsx_reader,
             ".xls": xlsx_reader,
             ".txt": txt_reader,
-            ".pptx": pptx_reader
+            ".pptx": pptx_reader,
         }
 
         if logging_level:
