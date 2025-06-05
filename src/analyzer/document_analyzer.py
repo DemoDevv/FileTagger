@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import List, Optional, Set
 import logging
 
-from analyzer.readers import (
+from src.analyzer.readers import (
     doc_reader,
     docx_reader,
     pdf_reader,
