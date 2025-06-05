@@ -46,7 +46,7 @@ class DocumentAnalyzer:
         try:
             extension = file_path.suffix.lower()
 
-            if extension not in self.supported_extensions.keys():
+            if extension not in self.supported_extensions:
                 return None
 
             text_content = self._extract_text(file_path, extension)
