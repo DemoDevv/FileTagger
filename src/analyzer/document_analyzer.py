@@ -51,7 +51,7 @@ class DocumentAnalyzer:
                 return None
 
             found_tags_title = self._find_tags(file_path.stem.lower())
-            found_tags = self._find_tags(text_content)
+            found_tags = self._find_tags(text_content.lower())
             found_tags.update(found_tags_title)
 
             if found_tags_title or found_tags:
@@ -74,15 +74,15 @@ class DocumentAnalyzer:
                     reader = pypdf.PdfReader(file)
                     return " ".join(
                         page.extract_text() for page in reader.pages
-                    ).lower()
+                    )
 
             elif extension in [".docx", ".doc"]:
                 doc = docx.Document(file_path.__str__())
-                return " ".join(paragraph.text for paragraph in doc.paragraphs).lower()
+                return " ".join(paragraph.text for paragraph in doc.paragraphs)
 
             elif extension in [".xlsx", ".xls"]:
                 df = pd.read_excel(file_path)
-                return " ".join(df.astype(str).values.flatten()).lower()
+                return " ".join(df.astype(str).values.flatten())
 
             elif extension == ".pptx":
                 prs = pptx.Presentation(file_path.__str__())
@@ -97,13 +97,13 @@ class DocumentAnalyzer:
                             for run in paragraph.runs:
                                 text_buffer.append(run.text)
 
-                return " ".join(text_buffer).lower()
+                return " ".join(text_buffer)
 
             elif extension == ".txt":
                 with open(
                     file_path, "r", encoding="utf-8", errors="ignore"
                 ) as file:
-                    return file.read().lower()
+                    return file.read()
 
         except Exception as e:
             logging.error(f"Erreur d'extraction pour {file_path}: {str(e)}")
