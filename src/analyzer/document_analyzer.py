@@ -1,11 +1,12 @@
 from __future__ import print_function
-import logging
 from pathlib import Path
 from typing import List, Optional, Set
+import logging
 
 import docx
-import pandas as pd
+import pptx
 import pypdf
+import pandas as pd
 
 
 class DocumentAnalyzer:
@@ -25,6 +26,7 @@ class DocumentAnalyzer:
             ".xlsx",
             ".xls",
             ".txt",
+            ".pptx"
         }
 
         if logging_level:
@@ -48,8 +50,8 @@ class DocumentAnalyzer:
             if text_content is None:
                 return None
 
-            found_tags_title = self._find_tags(file_path.stem)
-            found_tags = self._find_tags(text_content)
+            found_tags_title = self._find_tags(file_path.stem.lower())
+            found_tags = self._find_tags(text_content.lower())
             found_tags.update(found_tags_title)
 
             if found_tags_title or found_tags:
@@ -82,6 +84,21 @@ class DocumentAnalyzer:
                 df = pd.read_excel(file_path)
                 return " ".join(df.astype(str).values.flatten())
 
+            elif extension == ".pptx":
+                prs = pptx.Presentation(file_path.__str__())
+
+                text_buffer = []
+
+                for slide in prs.slides:
+                    for shape in slide.shapes:
+                        if not shape.has_text_frame:
+                            continue
+                        for paragraph in shape.text_frame.paragraphs: # type: ignore
+                            for run in paragraph.runs:
+                                text_buffer.append(run.text)
+
+                return " ".join(text_buffer)
+
             elif extension == ".txt":
                 with open(
                     file_path, "r", encoding="utf-8", errors="ignore"
@@ -96,4 +113,4 @@ class DocumentAnalyzer:
         """
         Trouve les tags dans le texte
         """
-        return set([tag for tag in self.tags if text.find(tag) != -1])
+        return {tag for tag in self.tags if tag.lower() in text}
