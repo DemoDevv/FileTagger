@@ -11,7 +11,7 @@ def pdf_reader(file_path):
 
 
 def docx_reader(file_path):
-    doc = docx.Document(file_path.__str__())
+    doc = docx.Document(str(file_path))
     return " ".join(paragraph.text for paragraph in doc.paragraphs)
 
 
