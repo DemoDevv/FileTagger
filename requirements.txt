@@ -3,3 +3,4 @@ pandas
 pytest
 openpyxl
 python-docx
+python-pptx
