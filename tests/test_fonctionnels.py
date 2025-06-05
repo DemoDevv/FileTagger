@@ -26,7 +26,7 @@ def test_analyze_document_with_compatible_extension():
         == ""
     )
 
-def test_analyze_document_title_without_break():
+def test_analyze_document_title_case_insensitive():
     local_document_analyzer = LocalDocumentAnalyzer(["pYthon"], True)
     file_path = Path("tests/ressources/test_tag_python.txt")
 
