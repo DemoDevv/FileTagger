@@ -113,4 +113,4 @@ class DocumentAnalyzer:
         """
         Trouve les tags dans le texte
         """
-        return set([tag for tag in self.tags if text.find(tag.lower()) != -1])
+        return {tag for tag in self.tags if tag.lower() in text}
