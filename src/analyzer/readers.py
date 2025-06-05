@@ -25,7 +25,7 @@ def xlsx_reader(file_path):
 
 
 def pptx_reader(file_path):
-    prs = pptx.Presentation(file_path.__str__())
+    prs = pptx.Presentation(str(file_path))
 
     text_buffer = []
 
