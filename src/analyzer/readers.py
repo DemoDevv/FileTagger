@@ -1,7 +1,7 @@
-import pypdf
 import docx
-import pptx
 import pandas as pd
+import pptx
+import pypdf
 
 
 def pdf_reader(file_path):
