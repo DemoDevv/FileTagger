@@ -7,3 +7,4 @@ ressources/*
 pyrightconfig.json
 .pytest_cache
 .ruff_cache
+private-ressources
