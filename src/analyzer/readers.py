@@ -1,30 +1,47 @@
+import subprocess
+from sys import platform
+
 import docx
 import pandas as pd
 import pptx
 import pypdf
 
 
-def pdf_reader(file_path):
+def pdf_reader(file_path) -> str:
     with open(file_path, "rb") as file:
         reader = pypdf.PdfReader(file)
         return " ".join(page.extract_text() for page in reader.pages)
 
 
-def docx_reader(file_path):
+def docx_reader(file_path) -> str:
     doc = docx.Document(str(file_path))
     return " ".join(paragraph.text for paragraph in doc.paragraphs)
 
 
-def doc_reader(file_path):
-    pass
+def doc_reader(file_path) -> str:
+    if platform == "darwin":
+        try:
+            content = subprocess.run(
+                ["textutil", "-stdout", "-cat", "txt", str(file_path)],
+                capture_output=True,
+                text=True,
+            )
+            return content.stdout
+        except Exception as e:
+            print(f"Error reading doc file: {e}")
+            return ""
+    else:
+        raise NotImplementedError(
+            "doc_reader is not implemented for this platform"
+        )
 
 
-def xlsx_reader(file_path):
+def xlsx_reader(file_path) -> str:
     df = pd.read_excel(file_path)
     return " ".join(df.astype(str).values.flatten())
 
 
-def pptx_reader(file_path):
+def pptx_reader(file_path) -> str:
     prs = pptx.Presentation(str(file_path))
 
     text_buffer = []
@@ -40,6 +57,6 @@ def pptx_reader(file_path):
     return " ".join(text_buffer)
 
 
-def txt_reader(file_path):
+def txt_reader(file_path) -> str:
     with open(file_path, "r", encoding="utf-8", errors="ignore") as file:
         return file.read()
