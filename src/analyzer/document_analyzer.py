@@ -1,7 +1,6 @@
-from __future__ import print_function
+import logging
 from pathlib import Path
 from typing import List, Optional, Set
-import logging
 
 from src.analyzer.readers import (
     doc_reader,
