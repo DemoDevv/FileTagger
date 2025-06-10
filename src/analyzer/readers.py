@@ -9,13 +9,13 @@ import pypdf
 
 def pdf_reader(file_path) -> str:
     with open(file_path, "rb") as file:
-        reader = pypdf.PdfReader(file)
-        return " ".join(page.extract_text() for page in reader.pages)
+        return " ".join(page.extract_text() for page in pypdf.PdfReader(file).pages)
 
 
 def docx_reader(file_path) -> str:
-    doc = docx.Document(str(file_path))
-    return " ".join(paragraph.text for paragraph in doc.paragraphs)
+    return " ".join(
+        paragraph.text for paragraph in docx.Document(str(file_path)).paragraphs
+    )
 
 
 def doc_reader(file_path) -> str:
@@ -31,14 +31,11 @@ def doc_reader(file_path) -> str:
             print(f"Error reading doc file: {e}")
             return ""
     else:
-        raise NotImplementedError(
-            "doc_reader is not implemented for this platform"
-        )
+        raise NotImplementedError("doc_reader is not implemented for this platform")
 
 
 def xlsx_reader(file_path) -> str:
-    df = pd.read_excel(file_path)
-    return " ".join(df.astype(str).values.flatten())
+    return " ".join(pd.read_excel(file_path).astype(str).values.flatten())
 
 
 def pptx_reader(file_path) -> str:
